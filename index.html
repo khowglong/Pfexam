@@ -153,6 +153,7 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
       <button class="btn" id="swap" style="padding:4px 10px;font-size:13px">⇅ สลับตำแหน่งช้อยส์</button>
       <button class="linkbtn" id="reroll">สุ่มช้อยส์ใหม่</button>
       <button class="linkbtn" id="reset">ล้างคำตอบชุดนี้</button>
+      <button class="linkbtn" id="clearhl">ล้างไฮไลท์ทั้งหมด</button>
     </div>
   </section>
 
@@ -763,6 +764,9 @@ $("wrongOnly").onchange=e=>{S.wrongOnly=e.target.checked;if(S.wrongOnly)S.unansO
 $("unansOnly").onchange=e=>{S.unansOnly=e.target.checked;if(S.unansOnly)S.wrongOnly=false;S.idx[S.pool]=0;save();full()};
 $("reroll").onclick=()=>{S.seed[S.pool]=(Math.random()*1e9)|0;S.ans[S.pool]={};S.idx[S.pool]=0;rebuild(S.pool);save();full()};
 $("swap").onclick=()=>{S.oseed[S.pool]=((Math.random()*1e9)|0)||1;save();renderCard()};
+{let armed=null;const b=$("clearhl");b.onclick=()=>{
+  if(!armed){b.textContent="แตะอีกครั้งเพื่อยืนยัน";b.style.color="var(--bad)";armed=setTimeout(()=>{armed=null;b.textContent="ล้างไฮไลท์ทั้งหมด";b.style.color=""},3000);return}
+  clearTimeout(armed);armed=null;S.hl={p1:{},p2:{},p3:{},p4:{}};save();renderCard();b.textContent="ล้างแล้ว ✓";b.style.color="";setTimeout(()=>b.textContent="ล้างไฮไลท์ทั้งหมด",1500)}}
 $("reset").onclick=()=>{S.ans[S.pool]={};S.idx[S.pool]=0;save();full()};
 $("prev").onclick=()=>go(-1);$("next").onclick=()=>go(1);
 document.addEventListener("mousedown",e=>{if(e.target.closest("button"))e.preventDefault()});
