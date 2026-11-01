@@ -69,7 +69,10 @@ h1{font-size:24px;margin:0;font-family:var(--zh);letter-spacing:.01em}
 .sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;font-size:13px;line-height:1;color:var(--muted);background:var(--surface)}
 .sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--surface) inset}
 .sw.y{background:#FFE36E}.sw.g{background:#9EE6B0}.sw.p{background:#FFB3C7}
-.q{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.q.hlon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.q:not(.hlon) .ph{cursor:text}
+.hltog{font:inherit;font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.hltog[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
 .ph{cursor:pointer;border-radius:4px;padding:1px 0;-webkit-tap-highlight-color:transparent;transition:background .12s}
 .ph.y{background:#FFE36E;color:#1E1A16}.ph.g{background:#9EE6B0;color:#1E1A16}.ph.p{background:#FFB3C7;color:#1E1A16}
 .hlclear{align-self:flex-start;margin-top:-8px;background:none;border:0;color:var(--muted);font:inherit;font-size:12px;text-decoration:underline;cursor:pointer;padding:4px 0}
@@ -563,7 +566,7 @@ const LS="tcm-nk-exam-v1-"+TCM_AUTH;
 function load(){let loc={},lt=0;try{loc=JSON.parse(localStorage.getItem(LS))||{};lt=loc._t||0}catch(e){}
   const r=window.__REMOTE;if(r&&r.st&&(r.t||0)>=lt)return r.st;return loc}
 function save(){S._t=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}if(window.__cloud)window.__cloud.save(S)}
-const S=Object.assign({pool:"p1",dis:[],shuffle:false,wrongOnly:false,unansOnly:false,seed:{p1:1,p2:1,p3:1,p4:1},ans:{p1:{},p2:{},p3:{},p4:{}},idx:{p1:0,p2:0,p3:0,p4:0},oseed:{p1:0,p2:0,p3:0,p4:0},theme:null,hl:{},pen:"y"},load());
+const S=Object.assign({pool:"p1",dis:[],shuffle:false,wrongOnly:false,unansOnly:false,seed:{p1:1,p2:1,p3:1,p4:1},ans:{p1:{},p2:{},p3:{},p4:{}},idx:{p1:0,p2:0,p3:0,p4:0},oseed:{p1:0,p2:0,p3:0,p4:0},theme:null,hl:{},pen:"y",hlOn:true},load());
 ["p1","p2","p3","p4"].forEach(p=>{S.seed[p]=S.seed[p]||1;S.ans[p]=S.ans[p]||{};S.idx[p]=S.idx[p]||0;S.oseed=S.oseed||{};S.oseed[p]=S.oseed[p]||0;S.hl=S.hl||{};S.hl[p]=S.hl[p]||{};});
 
 // ---------- data ----------
@@ -712,14 +715,15 @@ function renderCard(){
   card.innerHTML=h;
   // highlight: split stem into tappable phrases
   const meta=card.querySelector(".meta");
-  meta.insertAdjacentHTML("beforeend",`<div class="hlbar" aria-label="สีไฮไลท์">${["y","g","p"].map(c=>`<button class="sw ${c}" data-c="${c}" aria-pressed="${S.pen===c}" aria-label="ไฮไลท์"></button>`).join("")}</div>`);
-  const qel=card.querySelector(".q");let pi=0;const H=(S.hl[S.pool][q.id]||{});
+  meta.insertAdjacentHTML("beforeend",`<div class="hlbar"><button class="hltog" aria-pressed="${S.hlOn}">🖍 ไฮไลท์${S.hlOn?"":" ปิด"}</button>${S.hlOn?["y","g","p"].map(c=>`<button class="sw ${c}" data-c="${c}" aria-pressed="${S.pen===c}" aria-label="สีไฮไลท์"></button>`).join(""):""}</div>`);
+  meta.querySelector(".hltog").onclick=()=>{S.hlOn=!S.hlOn;save();renderCard()};
+  const qel=card.querySelector(".q");if(S.hlOn)qel.classList.add("hlon");let pi=0;const H=(S.hl[S.pool][q.id]||{});
   const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const parts=c.textContent.match(/[^，。、；：？,]+[，。、；：？,]?|[，。、；：？,]/g)||[];const fr=document.createDocumentFragment();
       parts.forEach(t=>{const sp=document.createElement("span");sp.className="ph"+(H[pi]?" "+H[pi]:"");sp.dataset.i=pi++;sp.textContent=t;fr.appendChild(sp)});c.replaceWith(fr)}else if(c.nodeType===1)walk(c)})};
   walk(qel);
   if(Object.keys(H).length)qel.insertAdjacentHTML("afterend",'<button class="hlclear">ล้างไฮไลท์ข้อนี้</button>');
   meta.querySelectorAll(".sw").forEach(b=>b.onclick=()=>{S.pen=b.dataset.c;save();meta.querySelectorAll(".sw").forEach(x=>x.setAttribute("aria-pressed",x===b))});
-  qel.onclick=e=>{const sp=e.target.closest(".ph");if(!sp)return;const m=S.hl[S.pool][q.id]=S.hl[S.pool][q.id]||{};const i=sp.dataset.i;
+  qel.onclick=e=>{if(!S.hlOn)return;const sp=e.target.closest(".ph");if(!sp)return;const m=S.hl[S.pool][q.id]=S.hl[S.pool][q.id]||{};const i=sp.dataset.i;
     if(m[i]===S.pen)delete m[i];else m[i]=S.pen;sp.className="ph"+(m[i]?" "+m[i]:"");
     if(!Object.keys(m).length)delete S.hl[S.pool][q.id];save();
     let cb=card.querySelector(".hlclear");if(S.hl[S.pool][q.id]&&!cb){qel.insertAdjacentHTML("afterend",'<button class="hlclear">ล้างไฮไลท์ข้อนี้</button>');bindClear()}else if(!S.hl[S.pool][q.id]&&cb)cb.remove()};
