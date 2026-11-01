@@ -123,7 +123,7 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
     <div>
       <h1>中医内科学 Exam</h1>
       <p class="credit">KW Jirachai</p>
-      <p class="sub" style="margin:2px 0 0"><span id="who"></span> · <button class="linkbtn" id="logout">ออกจากระบบ</button></p>
+      <p class="sub" style="margin:2px 0 0"><span id="who"></span> · <button class="linkbtn" id="logout">ออกจากระบบ</button> · <span id="sync"></span></p>
       <p class="sub">ข้อสอบจากไฟล์ 中医内科学临床考试复习 (Sorat Liu) · 20 โรค · 4 ชุด</p>
     </div>
     <div class="topright">
@@ -542,8 +542,14 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
 患者，女，35岁。经期或经后小腹绵绵作痛，伴腰骶酸痛，经色暗淡，量少质稀薄，头晕耳鸣，面色晦暗，健忘失眠，舌质淡红，苔薄，脉沉细。
 </script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-(function(){
+// paste Firebase web config here
+window.FIREBASE_CONFIG={apiKey:"AIzaSyCUuUcdLeLnYewlFa2WJpvpW5upxdGopGc",authDomain:"pfexam-461c6.firebaseapp.com",projectId:"pfexam-461c6",storageBucket:"pfexam-461c6.firebasestorage.app",messagingSenderId:"220806348589",appId:"1:220806348589:web:78f62164a6a4d4010a1da4"};
+</script>
+<script>
+window.__startApp=function(){
 "use strict";
 if(!TCM_USERS[TCM_AUTH]){const g=document.getElementById("gate");g.hidden=false;
   const hf=s=>{let h=2166136261;for(const c of s){h^=c.codePointAt(0);h=Math.imul(h,16777619)}return (h>>>0).toString(36)};
@@ -553,8 +559,9 @@ if(!TCM_USERS[TCM_AUTH]){const g=document.getElementById("gate");g.hidden=false;
   return}
 // ---------- storage (safe) ----------
 const LS="tcm-nk-exam-v1-"+TCM_AUTH;
-function load(){try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return {}}}
-function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+function load(){let loc={},lt=0;try{loc=JSON.parse(localStorage.getItem(LS))||{};lt=loc._t||0}catch(e){}
+  const r=window.__REMOTE;if(r&&r.st&&(r.t||0)>=lt)return r.st;return loc}
+function save(){S._t=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}if(window.__cloud)window.__cloud.save(S)}
 const S=Object.assign({pool:"p1",dis:[],shuffle:false,wrongOnly:false,unansOnly:false,seed:{p1:1,p2:1,p3:1,p4:1},ans:{p1:{},p2:{},p3:{},p4:{}},idx:{p1:0,p2:0,p3:0,p4:0},oseed:{p1:0,p2:0,p3:0,p4:0},theme:null,hl:{},pen:"y"},load());
 ["p1","p2","p3","p4"].forEach(p=>{S.seed[p]=S.seed[p]||1;S.ans[p]=S.ans[p]||{};S.idx[p]=S.idx[p]||0;S.oseed=S.oseed||{};S.oseed[p]=S.oseed[p]||0;S.hl=S.hl||{};S.hl[p]=S.hl[p]||{};});
 
@@ -766,6 +773,22 @@ $("theme").onclick=()=>{const dark=S.theme?S.theme==="dark":matchMedia("(prefers
 applyTheme();full();
 $("who").textContent=TCM_USERS[TCM_AUTH];
 $("logout").onclick=()=>{try{localStorage.removeItem("tcm-nk-auth")}catch(_){}location.reload()};
+};
+// ---------- cloud sync (Firebase Firestore) ----------
+(function(){
+  var cfg=window.FIREBASE_CONFIG,db=null,timer=null,pending=null;
+  function setSt(t){var e=document.getElementById("sync");if(e)e.textContent=t}
+  window.__cloud={enabled:false,save:function(st){if(!db)return;pending=st;setSt("☁ กำลังบันทึก…");clearTimeout(timer);timer=setTimeout(push,800)}};
+  function push(){if(!pending)return;var data={state:JSON.stringify(pending),updatedAt:Date.now()};pending=null;
+    db.collection("pfexam").doc(TCM_AUTH).set(data).then(function(){setSt("☁ บันทึกแล้ว")}).catch(function(){setSt("☁ บันทึกไม่สำเร็จ (เก็บในเครื่องไว้)")})}
+  document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")push()});
+  var started=false;function start(remote){if(started)return;started=true;window.__REMOTE=remote||null;window.__startApp();
+    if(db)setSt(remote?"☁ โหลดจากคลาวด์แล้ว":"☁ พร้อมบันทึก")}
+  if(!TCM_USERS[TCM_AUTH]||!cfg||!window.firebase){start(null);return}
+  try{firebase.initializeApp(cfg);db=firebase.firestore();window.__cloud.enabled=true}catch(e){start(null);return}
+  var to=setTimeout(function(){start(null);setSt("☁ ออฟไลน์ (เก็บในเครื่อง)")},5000);
+  db.collection("pfexam").doc(TCM_AUTH).get().then(function(d){clearTimeout(to);var r=null;if(d.exists){try{r={st:JSON.parse(d.data().state),t:d.data().updatedAt||0}}catch(e){}}start(r)})
+    .catch(function(){clearTimeout(to);start(null);setSt("☁ เชื่อมคลาวด์ไม่ได้ (เก็บในเครื่อง)")});
 })();
 </script>
 </body>
