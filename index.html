@@ -109,8 +109,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 </head>
 <body class="locked">
 <script>
-// light lock: 2 passwords, each keeps its own progress
-var TCM_USERS={"1c5p7tu":"บัญชี 1","1mwasdp":"บัญชี 2"},TCM_AUTH=null;
+// light lock: one password, remembered on this device
+var TCM_USERS={"1c5p7tu":"main"},TCM_AUTH=null;
 try{TCM_AUTH=localStorage.getItem("tcm-nk-auth")}catch(e){}
 if(TCM_USERS[TCM_AUTH])document.body.className="";
 </script>
@@ -126,7 +126,7 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
     <div>
       <h1>中医内科学 Exam</h1>
       <p class="credit">KW Jirachai</p>
-      <p class="sub" style="margin:2px 0 0"><span id="who"></span> · <button class="linkbtn" id="logout">ออกจากระบบ</button> · <span id="sync"></span></p>
+      <p class="sub" style="margin:2px 0 0"><span id="sync"></span></p>
       <p class="sub">ข้อสอบจากไฟล์ 中医内科学临床考试复习 (Sorat Liu) · 20 โรค · 4 ชุด</p>
     </div>
     <div class="topright">
@@ -779,8 +779,7 @@ document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;
 function applyTheme(){if(S.theme)document.documentElement.setAttribute("data-theme",S.theme);else document.documentElement.removeAttribute("data-theme")}
 $("theme").onclick=()=>{const dark=S.theme?S.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;S.theme=dark?"light":"dark";applyTheme();save()};
 applyTheme();full();
-$("who").textContent=TCM_USERS[TCM_AUTH];
-$("logout").onclick=()=>{try{localStorage.removeItem("tcm-nk-auth")}catch(_){}location.reload()};
+
 };
 // ---------- cloud sync (Firebase Firestore) ----------
 (function(){
