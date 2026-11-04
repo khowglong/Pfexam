@@ -40,8 +40,8 @@ h1{font-size:24px;margin:0;font-family:var(--zh);letter-spacing:.01em}
 .bar{height:4px;border-radius:2px;background:var(--line);overflow:hidden;display:flex}
 .bar i{display:block;height:100%} .bar .o{background:var(--ok)} .bar .x{background:var(--bad)}
 .pool{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
-.pbtn{flex:1;min-width:0;font:inherit;font-weight:600;font-size:14px;padding:10px 8px;border:0;background:transparent;color:var(--muted);cursor:pointer;line-height:1.3}
-.pbtn small{display:block;font-weight:500;font-size:11.5px;font-family:var(--zh)}
+.pbtn{flex:1;min-width:0;font:inherit;font-weight:600;font-size:13.5px;padding:10px 4px;border:0;background:transparent;color:var(--muted);cursor:pointer;line-height:1.3}
+.pbtn small{display:block;font-weight:500;font-size:10.5px;white-space:nowrap;font-family:var(--zh)}
 .pbtn+.pbtn{border-left:1px solid var(--line)}
 .pbtn[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
 .label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -127,7 +127,7 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
       <h1>中医内科学 Exam</h1>
       <p class="credit">KW Jirachai</p>
       <p class="sub" style="margin:2px 0 0"><span id="sync"></span></p>
-      <p class="sub">ข้อสอบจากไฟล์ 中医内科学临床考试复习 (Sorat Liu) · 20 โรค · 4 ชุด</p>
+      <p class="sub">ข้อสอบจากไฟล์ 中医内科学临床考试复习 (Sorat Liu) · 20 โรค · 5 ชุด</p>
     </div>
     <div class="topright">
       <button class="themebtn" id="theme" aria-label="สลับ dark mode" title="Dark mode">◐</button>
@@ -146,8 +146,9 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
       <button class="pbtn" data-p="p2" aria-pressed="false">ชุด 2<small>方 → 药</small></button>
       <button class="pbtn" data-p="p3" aria-pressed="false">ชุด 3<small>方 → 病·证</small></button>
       <button class="pbtn" data-p="p4" aria-pressed="false">ชุด 4<small>病例 → 辨证</small></button>
+      <button class="pbtn" data-p="p5" aria-pressed="false">ชุด 5<small>基础常识</small></button>
     </div>
-    <span class="label">โรค</span>
+    <span class="label">หมวด</span>
     <div class="chips" id="chips"></div>
     <div class="toggles">
       <label><input type="checkbox" id="shuffle"> สุ่มลำดับ</label>
@@ -173,7 +174,7 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
     <span class="label">แผนที่ข้อ</span>
     <div class="map" id="map"></div>
   </section>
-  <p class="ref">อ้างอิงข้อมูลจากไฟล์ 中医内科学临床考试复习 by Sorat Liu เท่านั้น · ตัวยาแสดงโดยไม่ระบุน้ำหนัก · เคสผู้ป่วยในชุด 4 แต่งโดย AI (辨证 / 证机 / 方 อิงไฟล์)</p>
+  <p class="ref">อ้างอิงข้อมูลจากไฟล์ 中医内科学临床考试复习 by Sorat Liu และ 100条中医的基础常识 (ชุด 5) เท่านั้น · ตัวยาแสดงโดยไม่ระบุน้ำหนัก · เคสผู้ป่วยในชุด 4 แต่งโดย AI (辨证 / 证机 / 方 อิงไฟล์)</p>
 </div></div>
 
 <script id="data" type="text/plain">
@@ -422,6 +423,108 @@ if(TCM_USERS[TCM_AUTH])document.body.className="";
 气血虚弱，胞宫、胞脉失于濡养
 肾气虚损，精血不足，胞宫、胞脉失于濡养
 </script>
+<script id="set5" type="text/plain">
+1|中心是|五脏|whole
+2|有机整体的主宰是|心|org
+3|阳中之阳的时间是|上午|time
+4|阴中之阴的时间是|前半夜|time
+5|阳中之阴的时间是|下午|time
+6|阳中之阳的时间是|上午|time
+7|说明阴阳互根的是|阴在内，阳之守也|yy|阴中求阳,阳中求阴
+8|说明对立制约的是|动极者镇之以静|yy|热者寒之,寒者热之
+9|说明阴阳互根的是|阴中求阳|yy|阴在内，阳之守也,阳中求阴
+10|说明阴阳转化的是|热极生寒|yy|重阴必阳
+11|称“阳中之阳”的脏是|心|org
+12|称“阴中之阳”的脏是|肝|org
+13|称“阴中之阴”的脏是|肾|org
+14|称“阳中之阴”的脏是|肺|org
+15|阴偏胜所致证候是|实寒证|syn
+16|阴偏衰所致证候是|虚热证|syn
+17|阳偏胜所致证候是|实热证|syn
+18|阳偏衰所致证候是|虚寒证|syn
+19|根据阴阳互根确定的治法是|阳中求阴|tx|阴中求阳
+20|适用于阳偏衰的治法是|阴病治阳|tx|寒者热之
+21|根据阴阳对立制约确定的治法是|热者寒之|tx|寒者热之
+22|适用于阳偏胜的治法是|热者寒之|tx
+23|“木”的特性是|曲直|feat
+24|“水”的特性是|润下|feat
+25|属于“金”的音是|商音|sound
+26|属于“水”的音是|羽音|sound
+27|木的“所不胜”之行是|金|el
+28|水的“所胜”之行是|火|el
+29|金的子行为|水|el
+30|火的母行为|木|el
+31|木的“所不胜”之“子”是|水|el
+32|木的“母”之“所胜”是|火|el
+33|肝病传脾的是|相乘|rel
+34|肝病传心的是|母病及子|rel
+35|肺病及肾是|母病及子|rel
+36|木火刑金是|相侮|rel
+37|“见肝之病，知肝传脾”属于|相乘|rel
+38|“水气凌心”属于|相乘|rel
+39|喜胜|悲|emo
+40|恐胜|喜|emo
+41|属于“火”的是|喜|emo
+42|属于“金”的是|悲|emo
+43|属于“水”的是|耳|sense
+44|属于“土”的是|口|sense
+45|属于“水”的是|咸|taste
+46|属于“木”的是|酸|taste
+47|属于“水”的是|黑|color
+48|属于“金”的是|白|color
+49|“君主之官”指|心|org
+50|“将军之官”指|肝|org
+51|“生之本”指|心|org
+52|“罢极之本”指|肝|org
+53|“气之根”是指|肾|org|肺
+54|“气之主”是指|肺|org|肾
+55|“先天之本”是指|肾|org
+56|“后天之本”是指|脾|org
+57|“生气之源”指|脾|org
+58|“主气之枢”指|肺|org
+59|“生痰之源”指|脾|org
+60|“贮痰之器”指|肺|org
+61|主行血的是|心|org
+62|主统血的是|脾|org
+63|朝百脉的是|肺|org
+64|主生血的是|脾|org
+65|通调水道的是|肺|org|肾
+66|运化水液的是|脾|org
+67|主行血的是|心|org
+68|主藏血的是|肝|org
+69|司呼吸的是|脾|org|肺|⚠ ไฟล์เฉลย 脾 — ตำราทั่วไป 肺司呼吸
+70|主纳气的是|肾|org
+71|主疏泄的是|肝|org
+72|主闭藏的是|肾|org
+73|气血生化之源是|脾|org
+74|五脏六腑之大主是|心|org
+75|主血的是|心|org
+76|主气的是|脾|org|肺|⚠ ไฟล์เฉลย 脾 — ตำราทั่วไป 肺主气
+77|藏神的是|心|org
+78|调畅情志的是|肝|org
+79|主治节的是|肺|org
+80|主升清的是|脾|org
+81|与水液代谢关系最密切的是|肾|org|肺
+82|与血液运行关系最密切的是|心|org
+83|心的功能为|行血|fn
+84|肝的功能为|藏血|fn|疏泄
+85|肾的功能为|纳气|fn
+86|肺的功能为|主气|fn
+87|称为刚脏的是|肝|org
+88|称为娇脏的是|肺|org
+89|“中正之官”指|胆|fu
+90|“受盛之官”指|小肠|fu
+91|“主津”的是|大肠|fu
+92|“主液”的是|小肠|fu
+93|主受纳的是|胃|fu
+94|主化物的是|小肠|fu
+95|“水谷之海”指|胃|fu
+96|“州都之官”指|膀胱|fu
+97|有“精血同源”关系的是|肝肾|pair
+98|气机升降之枢是|脾胃|pair|肝肺
+99|有“水火既济”关系的是|心肾|pair
+100|与气机调节关系密切的是|肝肺|pair|脾胃
+</script>
 <script id="cases" type="text/plain">
 患者，男，28岁。昨日淋雨后恶寒重，发热轻，无汗，头痛，肢节酸疼，鼻塞声重，流清涕，咳嗽痰白稀，舌苔薄白，脉浮紧。
 患者，女，24岁。发热2天，微恶风，汗出不畅，头胀痛，咽喉红肿疼痛，咳嗽痰黄黏，鼻塞流黄涕，口渴欲饮，舌边尖红，苔薄黄，脉浮数。
@@ -566,8 +669,8 @@ const LS="tcm-nk-exam-v1-"+TCM_AUTH;
 function load(){let loc={},lt=0;try{loc=JSON.parse(localStorage.getItem(LS))||{};lt=loc._t||0}catch(e){}
   const r=window.__REMOTE;if(r&&r.st&&(r.t||0)>=lt)return r.st;return loc}
 function save(){S._t=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}if(window.__cloud)window.__cloud.save(S)}
-const S=Object.assign({pool:"p1",dis:[],shuffle:false,wrongOnly:false,unansOnly:false,seed:{p1:1,p2:1,p3:1,p4:1},ans:{p1:{},p2:{},p3:{},p4:{}},idx:{p1:0,p2:0,p3:0,p4:0},oseed:{p1:0,p2:0,p3:0,p4:0},theme:null,hl:{},pen:"y",hlOn:true},load());
-["p1","p2","p3","p4"].forEach(p=>{S.seed[p]=S.seed[p]||1;S.ans[p]=S.ans[p]||{};S.idx[p]=S.idx[p]||0;S.oseed=S.oseed||{};S.oseed[p]=S.oseed[p]||0;S.hl=S.hl||{};S.hl[p]=S.hl[p]||{};});
+const S=Object.assign({pool:"p1",dis:[],shuffle:false,wrongOnly:false,unansOnly:false,seed:{p1:1,p2:1,p3:1,p4:1,p5:1},ans:{p1:{},p2:{},p3:{},p4:{},p5:{}},idx:{p1:0,p2:0,p3:0,p4:0,p5:0},oseed:{p1:0,p2:0,p3:0,p4:0,p5:0},theme:null,hl:{},pen:"y",hlOn:true},load());
+["p1","p2","p3","p4","p5"].forEach(p=>{S.seed[p]=S.seed[p]||1;S.ans[p]=S.ans[p]||{};S.idx[p]=S.idx[p]||0;S.oseed=S.oseed||{};S.oseed[p]=S.oseed[p]||0;S.hl=S.hl||{};S.hl[p]=S.hl[p]||{};});
 
 // ---------- data ----------
 const ZJ=document.getElementById("zhiji").textContent.trim().split("\n"),CS=document.getElementById("cases").textContent.trim().split("\n");
@@ -661,20 +764,39 @@ function buildP4(seed){
     return {id:"p4-"+r.i,d:r.d,tag:r.d,ai:true,q:`${r.c}<br><b>其辨证是</b>`,opts,ansText:r.s};
   });
 }
+// P5: 100 basic facts (second file)
+const F5=document.getElementById("set5").textContent.trim().split("\n").map(l=>{const [n,st,a,dom,ex,note]=l.split("|");return {n:+n,st,a,dom,ex:ex?ex.split(","):[],note:note||""}});
+const POOL5={whole:["五脏","六腑","经络","气血津液"],org:["心","肝","脾","肺","肾"],time:["上午","下午","前半夜","后半夜"],
+  yy:["阴在内，阳之守也","动极者镇之以静","阴中求阳","热极生寒","重阴必阳","阳中求阴","寒者热之","热者寒之"],syn:["实寒证","虚热证","实热证","虚寒证"],
+  tx:["阳中求阴","阴中求阳","阴病治阳","阳病治阴","热者寒之","寒者热之"],feat:["曲直","炎上","稼穑","从革","润下"],sound:["角音","徵音","宫音","商音","羽音"],
+  el:["木","火","土","金","水"],rel:["相乘","相侮","母病及子","子病及母"],emo:["喜","怒","思","悲","恐"],sense:["目","舌","口","鼻","耳"],
+  taste:["酸","苦","甘","辛","咸"],color:["青","赤","黄","白","黑"],fn:["行血","藏血","纳气","主气","统血","疏泄","运化"],
+  fu:["胆","胃","小肠","大肠","膀胱","三焦"],pair:["肝肾","脾胃","心肾","肝肺","心肺","肺肾"]};
+const WX={};[["曲直","炎上","稼穑","从革","润下"],["角音","徵音","宫音","商音","羽音"],["怒","喜","思","悲","恐"],["目","舌","口","鼻","耳"],["酸","苦","甘","辛","咸"],["青","赤","黄","白","黑"]].forEach(g=>g.forEach((x,i)=>WX[x]="木火土金水"[i]));
+const topic5=n=>n<=2?"整体观念":n<=22?"阴阳":n<=48?"五行":"藏象";
+function exp5(x,f){const hits=F5.filter(o=>o.a===x&&o!==f).slice(0,2).map(o=>`第${o.n}条：${o.st}—${x}`);
+  if(hits.length)return hits.join("；");if(WX[x])return `「${x}」属${WX[x]}`;return `本资料中没有以「${x}」为答案的条目`}
+function buildP5(seed){
+  return F5.map(f=>{const R=rng(seed^hashStr("p5"+f.n));const pool=POOL5[f.dom].filter(x=>x!==f.a&&!f.ex.includes(x));
+    const ds=shuf(pool,R).slice(0,3);
+    const opts=shuf([{text:f.a,ok:true,exp:`第${f.n}条：${f.st}—${f.a}`+(f.note?`（${f.note}）`:"")},...ds.map(x=>({text:x,exp:exp5(x,f)}))],R);
+    return {id:"p5-"+f.n,d:topic5(f.n),tag:topic5(f.n)+" · 第"+f.n+"条",q:`${f.st}（　　）`,opts,ansText:f.a,also:f.note?`<span style="color:var(--bad)">${f.note}</span>`:""}});
+}
 function alsoNote(r){const o=usesOf(r.f).filter(x=>x!==r);return o.length?"ตำรับนี้ในไฟล์ใช้กับอีก: "+o.map(x=>`<span class="zh">${pair(x)}</span>`).join(" , "):""}
 
 let Q={};
-function rebuild(p){Q[p]=({p1:buildP1,p2:buildP2,p3:buildP3,p4:buildP4})[p](S.seed[p])}
-["p1","p2","p3","p4"].forEach(rebuild);
+function rebuild(p){Q[p]=({p1:buildP1,p2:buildP2,p3:buildP3,p4:buildP4,p5:buildP5})[p](S.seed[p])}
+["p1","p2","p3","p4","p5"].forEach(rebuild);
 // answers stored as option text (so choice order can change); migrate old index answers
-["p1","p2","p3","p4"].forEach(p=>{const A=S.ans[p];Q[p].forEach(q=>{if(typeof A[q.id]==="number")A[q.id]=q.opts[A[q.id]]?q.opts[A[q.id]].text:undefined})});
+["p1","p2","p3","p4","p5"].forEach(p=>{const A=S.ans[p];Q[p].forEach(q=>{if(typeof A[q.id]==="number")A[q.id]=q.opts[A[q.id]]?q.opts[A[q.id]].text:undefined})});
 const isOk=(q,a)=>a===q.ansText;
 function ord(q){const s=S.oseed[S.pool];return s?shuf(q.opts,rng(s^hashStr(q.id))):q.opts}
 
 // ---------- view ----------
 const $=id=>document.getElementById(id);
 let view=[];
-function inDis(q){if(!S.dis.length)return true;const ds=Array.isArray(q.d)?q.d:[q.d];return ds.some(d=>S.dis.includes(d))}
+const T5=["整体观念","阴阳","五行","藏象"];const topics=()=>S.pool==="p5"?T5:DIS;
+function inDis(q){const act=S.dis.filter(d=>topics().includes(d));if(!act.length)return true;const ds=Array.isArray(q.d)?q.d:[q.d];return ds.some(d=>act.includes(d))}
 function computeView(keepId){
   const A=S.ans[S.pool];
   let v=Q[S.pool].filter(inDis);
@@ -686,12 +808,12 @@ function computeView(keepId){
   if(S.idx[S.pool]>=v.length)S.idx[S.pool]=Math.max(0,v.length-1);
 }
 function renderChips(){
-  const c=$("chips");
-  if(c.children.length===DIS.length+1){[...c.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===0?(S.dis.length?"false":"true"):(S.dis.includes(DIS[i-1])?"true":"false")));return}
-  c.innerHTML="";
-  const all=document.createElement("button");all.className="chip";all.textContent="ทั้งหมด";all.setAttribute("aria-pressed",S.dis.length?"false":"true");
-  all.onclick=()=>{S.dis=[];S.idx[S.pool]=0;save();full()};c.appendChild(all);
-  DIS.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d;b.setAttribute("aria-pressed",S.dis.includes(d)?"true":"false");
+  const c=$("chips");const TP=topics();const act=S.dis.filter(d=>TP.includes(d));
+  if(c.dataset.set===String(TP===T5)&&c.children.length===TP.length+1){[...c.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===0?(act.length?"false":"true"):(act.includes(TP[i-1])?"true":"false")));return}
+  c.innerHTML="";c.dataset.set=String(TP===T5);
+  const all=document.createElement("button");all.className="chip";all.textContent="ทั้งหมด";all.setAttribute("aria-pressed",act.length?"false":"true");
+  all.onclick=()=>{S.dis=S.dis.filter(d=>!TP.includes(d));S.idx[S.pool]=0;save();full()};c.appendChild(all);
+  TP.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d;b.setAttribute("aria-pressed",act.includes(d)?"true":"false");
     b.onclick=()=>{S.dis=S.dis.includes(d)?S.dis.filter(x=>x!==d):[...S.dis,d];S.idx[S.pool]=0;save();full()};c.appendChild(b)});
 }
 function renderStats(){
@@ -770,7 +892,7 @@ $("reroll").onclick=()=>{S.seed[S.pool]=(Math.random()*1e9)|0;S.ans[S.pool]={};S
 $("swap").onclick=()=>{S.oseed[S.pool]=((Math.random()*1e9)|0)||1;save();renderCard()};
 {let armed=null;const b=$("clearhl");b.onclick=()=>{
   if(!armed){b.textContent="แตะอีกครั้งเพื่อยืนยัน";b.style.color="var(--bad)";armed=setTimeout(()=>{armed=null;b.textContent="ล้างไฮไลท์ทั้งหมด";b.style.color=""},3000);return}
-  clearTimeout(armed);armed=null;S.hl={p1:{},p2:{},p3:{},p4:{}};save();renderCard();b.textContent="ล้างแล้ว ✓";b.style.color="";setTimeout(()=>b.textContent="ล้างไฮไลท์ทั้งหมด",1500)}}
+  clearTimeout(armed);armed=null;S.hl={p1:{},p2:{},p3:{},p4:{},p5:{}};save();renderCard();b.textContent="ล้างแล้ว ✓";b.style.color="";setTimeout(()=>b.textContent="ล้างไฮไลท์ทั้งหมด",1500)}}
 $("reset").onclick=()=>{S.ans[S.pool]={};S.idx[S.pool]=0;save();full()};
 $("prev").onclick=()=>go(-1);$("next").onclick=()=>go(1);
 document.addEventListener("mousedown",e=>{if(e.target.closest("button"))e.preventDefault()});
